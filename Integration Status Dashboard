@@ -1,0 +1,267 @@
+# Integration Status Dashboard
+
+**Format:** Google Sheet or Excel  
+**Update Frequency:** Every Monday  
+**Share With:** Client (view-only), Dev team (edit access)  
+**Purpose:** Single source of truth for integration progress
+
+---
+
+## How to Use This
+
+1. Copy this template to Google Sheets or Excel
+2. Fill out all integrations needed at project start
+3. Update status every Monday (or when status changes)
+4. Share view-only link with client in weekly update
+5. Reference in status meetings
+
+---
+
+## Template Structure
+
+### Column Definitions
+
+| Column | Values | Purpose |
+|--------|--------|---------|
+| Integration Name | Service name | What integration this is |
+| Status | Not Started / In Progress / Waiting on Client / Waiting on Provider / Blocked / Complete | Current state |
+| Owner | Client / Us / Dev / Provider | Who's responsible |
+| Blocker | Text description or "None" | What's preventing progress |
+| Next Action | Specific action needed | What needs to happen next |
+| Target Date | MM/DD/YYYY | When this should be complete |
+| Actual Date | MM/DD/YYYY | When it was actually completed |
+| Notes | Text | Additional context |
+
+---
+
+## Status Definitions
+
+**Not Started** = Haven't begun setup yet (usually means it's scheduled for later)
+
+**In Progress** = Actively being worked on (accounts created, configuring settings)
+
+**Waiting on Client** = Need something from client before we can proceed
+- Examples: DNS access, credentials, approval, decision
+
+**Waiting on Provider** = Waiting on external service
+- Examples: DNS propagation (48hrs), Google OAuth approval (1-3 days), domain verification
+
+**Blocked** = Cannot proceed due to issue
+- Examples: Account locked, service down, technical limitation discovered
+
+**Complete** = Fully configured and tested in all environments
+- Must be tested in dev, staging, and production before marking complete
+
+---
+
+## Example Dashboard
+
+| Integration | Status | Owner | Blocker | Next Action | Target | Actual | Notes |
+|-------------|--------|-------|---------|-------------|--------|--------|-------|
+| Resend Email | Waiting on Provider | Client | DNS propagating | Wait 24 more hours | Jan 22 | - | Added DNS records Jan 20 |
+| Google SSO | In Progress | Dev | None | Configure redirect URLs | Jan 21 | - | OAuth consent screen approved |
+| Supabase DB | Complete | Dev | None | - | Jan 18 | Jan 18 | Schema reviewed with client |
+| Stripe Payment | Not Started | Client | Account not created | Client to create Stripe account | Jan 25 | - | Will set up Week 3 |
+| Push Notifications | In Progress | Us | None | Set up Firebase project | Jan 23 | - | Client provided bundle IDs |
+| Linqly Deep Links | Waiting on Client | Client | App not published yet | Wait for App Store approval | Jan 30 | - | Can't test until app published |
+
+---
+
+## Color Coding (If Using Spreadsheet)
+
+**Status Colors:**
+- 🟢 Complete = Green
+- 🟡 In Progress = Yellow  
+- 🔴 Blocked = Red
+- ⚪ Waiting on Provider = Light gray
+- 🟠 Waiting on Client = Orange
+- ⚫ Not Started = White/no color
+
+**Owner Colors:**
+- Client = Light blue
+- Us = Light green
+- Dev = Light yellow
+- Provider = Light gray
+
+This makes it easy to scan and see: "Oh, 3 items waiting on client, 1 blocked, 2 in progress"
+
+---
+
+## Weekly Update Template (Using This Dashboard)
+
+**Email to client every Monday:**
+
+```
+Subject: [Project] - Integration Status Update
+
+Hi [Client],
+
+Here's this week's integration status:
+
+✅ COMPLETED THIS WEEK:
+• Supabase Database - Fully configured and tested
+
+🟡 IN PROGRESS:
+• Google SSO - OAuth approved, configuring redirect URLs (ready Jan 21)
+• Push Notifications - Setting up Firebase (ready Jan 23)
+
+⏳ WAITING ON YOU:
+• Resend Email - DNS records added, waiting 24 more hours for propagation
+• Stripe Payment - Need you to create Stripe account (link: stripe.com)
+
+🔴 BLOCKED:
+• None this week
+
+⚪ NOT STARTED (Scheduled for later):
+• Linqly Deep Links - Will set up after App Store approval (Week 4)
+
+NEXT WEEK TARGETS:
+• Complete: Google SSO, Push Notifications, Resend Email
+• Start: Stripe Payment (once you create account)
+
+Let me know if you have questions!
+
+[View full dashboard: link]
+
+Best,
+[Your Name]
+```
+
+---
+
+## How to Handle Common Scenarios
+
+### Scenario: Client slow to provide credentials
+
+**Update dashboard:**
+- Status: Waiting on Client
+- Blocker: "Waiting for DNS access since Jan 15"
+- Next Action: "Follow up with client"
+- Add note: "Sent reminder Jan 17, Jan 19. If no response by Jan 22, will escalate."
+
+**In your Monday update, highlight:**
+"⚠️ Resend Email integration is blocked waiting for DNS access (requested Jan 15). Without this, we can't test email features scheduled for Week 3. Can you provide by Jan 22?"
+
+### Scenario: Integration failed testing
+
+**Update dashboard:**
+- Status: Blocked
+- Blocker: "OAuth returns 400 error in staging"
+- Next Action: "Debug redirect URL configuration"
+- Add note: "Works in dev, fails in staging. Checking environment credentials."
+
+**Don't mark Complete until tested in all environments**
+
+### Scenario: Integration taking longer than expected
+
+**Update dashboard:**
+- Keep status accurate (In Progress)
+- Update Target Date to realistic date
+- Add note explaining delay
+- Blocker: "Google OAuth approval taking longer than expected (submitted Jan 15, usually 1-3 days)"
+
+**In Monday update:**
+"🟡 Google SSO delayed - OAuth approval taking longer than typical 1-3 days. Will follow up with Google. Backup plan: Launch with email login, add Google login in v1.1."
+
+---
+
+## Integration Checklist (Copy This Into Your Dashboard)
+
+Use this to ensure nothing is missed:
+
+### Email Integration (Resend, SendGrid, etc.)
+
+- [ ] Account created
+- [ ] Domain added to service
+- [ ] DNS records provided to client
+- [ ] DNS records added by client
+- [ ] Domain verified (wait 24-48hrs)
+- [ ] Test email sent successfully
+- [ ] Checked spam folder
+- [ ] API key generated
+- [ ] API key added to all environments (dev/staging/prod)
+- [ ] Email templates configured
+- [ ] Tested in staging
+- [ ] Tested in production
+
+### Google SSO
+
+- [ ] Google Cloud Console account created
+- [ ] OAuth consent screen configured
+- [ ] Privacy policy URL added
+- [ ] Redirect URLs added (all environments)
+- [ ] SHA-1 keys generated (Android)
+- [ ] SHA-1 keys added to Firebase
+- [ ] OAuth app submitted for verification
+- [ ] OAuth app approved
+- [ ] Tested in dev environment
+- [ ] Tested in staging environment
+- [ ] Tested in production
+- [ ] Tested on both iOS and Android
+
+### Database (Supabase, Firebase, etc.)
+
+- [ ] Account created
+- [ ] Project created
+- [ ] Database schema designed
+- [ ] Schema reviewed with client
+- [ ] Tables created
+- [ ] Row Level Security policies configured
+- [ ] API keys generated
+- [ ] API keys added to environments
+- [ ] Test data inserted
+- [ ] Dev can read/write data
+- [ ] Tested in staging
+- [ ] Production database set up separately
+- [ ] Backup strategy configured
+
+---
+
+## Download Template
+
+**Google Sheets Template:** [Create a copy of this template](link-to-actual-sheet)
+
+**Excel Template:** [Download .xlsx file](link-to-file)
+
+**Notion Template:** [Duplicate this database](link-to-notion)
+
+---
+
+## Tips for Keeping This Updated
+
+**Make it a Monday ritual:**
+- Block 15 minutes every Monday morning
+- Go through each integration
+- Update status based on what happened last week
+- Send client update immediately after
+
+**Use it in daily standups:**
+- "Let me check the integration dashboard..."
+- Reference it when dev says "blocked"
+- Update it live during standup
+
+**Share it proactively:**
+- Don't wait for client to ask "what's the status?"
+- Send weekly without being asked
+- Shows you're organized and on top of things
+
+**Keep notes detailed:**
+- Future you will thank present you
+- "Waiting on client" is not helpful 3 weeks later
+- "Waiting on client to provide DNS access - emailed Jan 15, followed up Jan 17" is helpful
+
+---
+
+## Success Metrics
+
+**Dashboard is working if:**
+- ✅ Client knows status without asking
+- ✅ Dev knows what's blocking them
+- ✅ You can answer "what's the status?" in 30 seconds
+- ✅ No surprises on launch day (everything tracked)
+
+**Dashboard needs improvement if:**
+- ❌ Client constantly asking for updates (not checking dashboard)
+- ❌ Statuses are outdated (not updating regularly)
+- ❌ Too many items in "Blocked" with no action plan
+- ❌ Completing items without testing in all environments
