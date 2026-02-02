@@ -32,7 +32,8 @@ What's Inside
 
 - Pre-Project Client Email - What accounts needed before dev starts
 - Integration Kickoff Agenda - 30-min call structure
-- [Integration Status Dashboard](integration-management-toolkit/Integration Status Dashboard)  - Track all integrations
+- [Integration Status Dashboard](Integration%20Status%20Dashboard.md)
+)  - Track all integrations
 - Environment Configuration Matrix - Document credentials per environment
 - Email Templates - Blocker alerts, completion notices, credential requests
 
